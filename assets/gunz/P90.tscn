@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://assets/gunz/p90/Material_003.material" type="Material" id=1]
+[ext_resource path="res://assets/gunz/p90/Material_004.material" type="Material" id=2]
+[ext_resource path="res://assets/gunz/p90/Material_001.material" type="Material" id=3]
+[ext_resource path="res://assets/gunz/p90/P90.glb" type="PackedScene" id=4]
+[ext_resource path="res://assets/gunz/P90.gd" type="Script" id=5]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, 0.113742, 0, 0, Vector2( 0.553903, 0.872727 ), 0.873378, 0.873378, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+spread = 90.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+scale_curve = SubResource( 2 )
+color = Color( 0.984314, 0.560784, 0.0156863, 1 )
+
+[sub_resource type="SpatialMaterial" id=4]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id=5]
+material = SubResource( 4 )
+radius = 0.05
+height = 0.1
+
+[node name="P90" instance=ExtResource( 4 )]
+script = ExtResource( 5 )
+
+[node name="P90" parent="P90Armature/Skeleton" index="0"]
+transform = Transform( 1, -1.42109e-14, -2.11758e-22, 0, 1, -1.42109e-14, 0, -3.17637e-22, 1, 0, 0, 0 )
+layers = 2
+material/0 = ExtResource( 2 )
+material/1 = ExtResource( 1 )
+material/2 = ExtResource( 3 )
+
+[node name="Particles" type="Particles" parent="." index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.48951, 0.408988, 0.0657871 )
+layers = 2
+emitting = false
+amount = 50
+lifetime = 0.09
+one_shot = true
+explosiveness = 1.0
+visibility_aabb = AABB( -1.04213, -0.604609, -0.641752, 2.08427, 1.29613, 1.2835 )
+process_material = SubResource( 3 )
+draw_pass_1 = SubResource( 5 )
+
+[node name="muzzle" type="Position3D" parent="." index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0.4, 0.06 )
+
+[node name="dir" type="Position3D" parent="muzzle" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51564, 0, 0 )

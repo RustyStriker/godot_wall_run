@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/gunz/Blaster/BlasterBullet.tres" type="Material" id=1]
+[ext_resource path="res://assets/gunz/Blaster/BlasterBullet.gd" type="Script" id=2]
+
+[node name="BlasterBullet" type="Area"]
+script = ExtResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+
+[node name="sphere" type="CSGSphere" parent="."]
+material = ExtResource( 1 )

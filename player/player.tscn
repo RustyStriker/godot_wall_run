@@ -1,0 +1,96 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://player/player_exp.gd" type="Script" id=1]
+[ext_resource path="res://ui_stuff/circle_gui.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/gunz/P90.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/gunz/Shotgun.tscn" type="PackedScene" id=4]
+[ext_resource path="res://player/copy_cam_pos.gd" type="Script" id=5]
+[ext_resource path="res://assets/gunz/Blaster.tscn" type="PackedScene" id=6]
+
+[sub_resource type="Curve" id=1]
+min_value = -2.5
+max_value = 5.0
+_data = [ Vector2( 0, 5 ), 0.0, 0.0, 0, 0, Vector2( 0.750865, -2.5 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=2]
+curve = SubResource( 1 )
+
+[sub_resource type="CapsuleShape" id=3]
+radius = 0.688135
+height = 0.622531
+
+[node name="player" type="KinematicBody"]
+collision_layer = 2147483652
+collision_mask = 7
+script = ExtResource( 1 )
+WALL_RUN_Y_SPEED = SubResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0 )
+shape = SubResource( 3 )
+
+[node name="cam" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0 )
+cull_mask = 1048573
+current = true
+
+[node name="P90" parent="cam" instance=ExtResource( 3 )]
+transform = Transform( 0.0347296, 0, 0.196962, 0, 0.2, 0, -0.196962, 0, 0.0347296, 0.5, -0.4, -0.5 )
+visible = false
+
+[node name="Shotgun" parent="cam" instance=ExtResource( 4 )]
+transform = Transform( -0.196962, 0, -0.0347296, 0, 0.2, 0, -0.0347296, 0, 0.196962, 0.5, -0.3, -0.2 )
+visible = false
+
+[node name="Blaster" parent="cam" instance=ExtResource( 6 )]
+transform = Transform( -3.25842e-08, 0, 0.2, 0, 0.2, 0, -0.2, 0, -3.25842e-08, 0.5, -0.4, -0.5 )
+
+[node name="circle_gui" parent="." instance=ExtResource( 2 )]
+items = [ "Nothing", "P90", "Shotgun", "Blaster" ]
+radius = 200
+
+[node name="CSGCylinder" type="CSGCylinder" parent="."]
+radius = 0.7
+height = 2.0
+sides = 64
+
+[node name="vpc" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vp" type="Viewport" parent="vpc"]
+size = Vector2( 1920, 1080 )
+transparent_bg = true
+handle_input_locally = false
+msaa = 4
+hdr = false
+usage = 3
+render_target_update_mode = 3
+gui_disable_input = true
+
+[node name="weapon_cam" type="Camera" parent="vpc/vp"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
+cull_mask = 2
+current = true
+near = 0.01
+far = 5.0
+script = ExtResource( 5 )
+main_cam = NodePath("../../../cam")
+
+[node name="gui" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="gui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "+"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tn" type="Tween" parent="."]
